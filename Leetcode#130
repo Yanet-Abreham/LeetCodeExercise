@@ -1,0 +1,33 @@
+class Solution {
+    public:
+        void solve(vector<vector<char>>& board) {
+          if(board.empty() || board[0].empty()) return;
+          int rows=board.size();
+          int columns=board[0].size();
+          for(int i=0;i<rows;i++){
+            if (board[i][0] == 'O') boundaryDfs(board,i,0);
+            if(board[i][columns-1]=='O') boundaryDfs(board,i,columns-1);
+          } 
+          for(int j=0;j<columns;j++){
+            if(board[0][j]=='O') boundaryDfs(board,0,j);
+            if(board[rows-1][j]=='O') boundaryDfs(board,rows-1,j);
+          }
+          for(int i=0;i<rows;i++){
+            for(int j=0;j<columns;j++){
+                if(board[i][j]=='O') board[i][j]='X';
+                else if(board[i][j]=='T') board[i][j]='O';
+            }
+          }
+        }
+        private:
+        void boundaryDfs(vector<vector<char>>& board, int i, int j){
+            int rows=board.size();
+            int columns=board[0].size();
+            if(i<0||j<0||i>=rows||j>=columns||board[i][j]!='O') return;
+            board[i][j]='T';
+            boundaryDfs(board,i+1,j);
+            boundaryDfs(board,i-1,j);
+            boundaryDfs(board,i,j+1);
+            boundaryDfs(board,i,j-1);
+        }
+    };
