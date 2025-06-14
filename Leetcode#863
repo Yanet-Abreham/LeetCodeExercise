@@ -1,0 +1,43 @@
+class Solution {
+public:
+    vector<int> distanceK(TreeNode* root, TreeNode* target, int k) {
+        parent(root);
+        solve(target,k);
+        return result;
+    }
+     unordered_map<TreeNode*, TreeNode*>par;
+    set<TreeNode*>s;
+    vector<int> result;
+    void parent(TreeNode* root){
+        if (root == NULL){
+            return;
+        }
+        if(root -> left){
+            par[root -> left] = root;
+        }
+        if (root -> right){
+            par[root -> right] = root;
+        }
+        parent(root -> left);
+        parent(root -> right);
+    }
+    void solve (TreeNode* node, int k){
+        if (s.find(node) != s.end()){
+            return;
+        }
+        s.insert(node);
+        if ( k == 0){
+            result.push_back(node -> val);
+        }
+        if (node -> left){
+            solve(node -> left, k - 1);
+        }
+        if (node -> right){ 
+            solve(node -> right, k - 1);
+        }
+        if(par[node]){
+            solve(par[node], k - 1);
+        }
+        return;
+    }
+};
