@@ -1,0 +1,21 @@
+class Solution {
+    public:
+        int getImportance(vector<Employee*> employees, int id) {
+            Employee* Emplo=nullptr;
+            for(int i=0;i<employees.size();i++){
+                if(employees[i]->id==id){
+                    Emplo=employees[i];
+                    break;
+                }
+            }
+            if(Emplo==nullptr) 
+            return 0;
+            int Total = Emplo->importance;
+            for(int i=0;i<Emplo->subordinates.size();i++){
+                int sub_id=Emplo->subordinates[i];
+                Total+=getImportance(employees,sub_id);
+            }
+            return Total;
+        }
+    };
+    
