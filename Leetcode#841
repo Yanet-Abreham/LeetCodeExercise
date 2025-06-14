@@ -1,0 +1,24 @@
+class Solution {
+public:
+    bool canVisitAllRooms(vector<vector<int>>& rooms) {
+         set<int> visited{};
+        stack<int> myStack{};
+        visited.insert(0);
+        for (const auto& element : rooms[0]){
+            myStack.push(element);
+        }
+            while (!myStack.empty()){
+                int currentRoom = myStack.top();
+                myStack.pop();
+                if (visited.find(currentRoom) == visited.end()){
+                    visited.insert(currentRoom);
+                    for(const auto& element:rooms[currentRoom]){
+                        myStack.push(element);
+                    }
+                }
+                
+            }
+
+        return(visited.size() == rooms.size());
+    }
+};
