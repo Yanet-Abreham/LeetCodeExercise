@@ -1,0 +1,38 @@
+class Solution {
+public:
+    vector<vector<int>> updateMatrix(vector<vector<int>>& mat) {
+        int r = mat.size();
+        int c = mat[0].size();
+        vector<vector<int>> result(r, vector<int>(c));
+        vector<vector<int>> visited(r, vector<int>(c, 0));
+        queue<pair<pair<int,int>, int>> myque;
+    
+        for(int i = 0; i < r; i++){
+            for(int j = 0; j < c; j++){
+                if(mat[i][j] == 0){
+                    result[i][j] = 0;
+                    myque.push({{i,j}, 0});
+                    visited[i][j] = 1;
+                }
+            }
+        }
+        int drow[] = {-1, 0, 1, 0};
+        int dcol[] = {0, 1, 0, -1};
+        while(!myque.empty()){
+            int row = myque.front().first.first;
+            int column = myque.front().first.second;
+            int step = myque.front().second;
+            myque.pop();
+            for(int i = 0; i < 4; i++){
+                int newrow=  row + drow[i];
+                int newcolumn= column + dcol[i];
+                if(newrow >= 0 && newrow < r && newcolumn >= 0 && newcolumn < c && visited [newrow][newcolumn] == 0){
+                    result[newrow][newcolumn]  = step +1;
+                    myque.push({{newrow, newcolumn}, step + 1});
+                    visited[newrow][newcolumn] = 1;
+                }
+            }
+        }
+        return result;
+    }
+};
