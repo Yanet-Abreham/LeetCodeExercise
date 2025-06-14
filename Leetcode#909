@@ -1,0 +1,32 @@
+class Solution {
+public:
+    int snakesAndLadders(vector<vector<int>>& board) {
+        int n = board.size();
+        int Max=n*n;
+        queue<int> myque;
+        myque.push(1);
+        vector<bool> visited(Max+1, false);
+        visited[1]=true;
+        int lets=0;
+        while(!myque.empty()){
+            int size=myque.size();
+            for(int i=0;i<size;i++){
+                int current=myque.front();
+                myque.pop();
+                if(current==Max) return lets;
+                for(int next = current+1;next<=min((current+6),Max); next++){
+                    int r=(n-1)-(next-1)/n;
+                    int c=(next-1)%n;
+                    if((n-1-r)%2==1) c=n-1-c;
+                    int destination=board[r][c]==-1 ? next:board[r][c];
+                    if(!visited[destination]){
+                        visited[destination]=true;
+                        myque.push(destination);
+                    }
+                }
+            }
+            lets++;
+        }
+        return -1;
+    }
+};
