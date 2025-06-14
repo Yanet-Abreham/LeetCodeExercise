@@ -1,0 +1,42 @@
+class Solution {
+public:
+    int orangesRotting(vector<vector<int>>& grid) {
+        int n=grid[0].size();
+        int m=grid.size();
+        queue<pair<pair<int,int>,int>> myque;
+        vector<vector<int>> vec(m,vector<int>(n,0));
+        int lets=0;
+        for(int i=0;i<m;i++){
+            for(int j=0;j<n;j++){
+                if(grid[i][j]==2){
+                    myque.push({{i,j},0});
+                    vec[i][j]=2;
+                } else if(grid[i][j]==1){
+                    lets++;
+                }
+            }
+        }
+        int time=0;
+        int rowdirec[4]={-1,1,0,0};
+        int columndirec[4]={0,0,-1,1};
+        while(!myque.empty()){
+            int r=myque.front().first.first;
+            int c=myque.front().first.second;
+            int t=myque.front().second;
+            myque.pop();
+            time=max(time,t);
+            for(int d=0;d<4;d++){
+                int nrow=r+rowdirec[d];
+                int ncolumn=c+columndirec[d];
+                if(nrow>=0 && nrow<m && ncolumn>=0 && ncolumn<n){
+                    if(grid[nrow][ncolumn]==1){
+                        grid[nrow][ncolumn]=2;
+                        lets--;
+                        myque.push({{nrow,ncolumn},t+1});
+                    }
+                }
+            }
+        }
+        return lets ==0 ? time:-1;
+    }
+};
