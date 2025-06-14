@@ -1,0 +1,37 @@
+class Solution {
+public:
+    int nearestExit(vector<vector<char>>& maze, vector<int>& entrance) {
+        int n=maze.size();
+        int m=maze[0].size();
+        queue<pair<int,int>> myque;
+        vector<vector<bool>> visited(n,vector<bool>(m,false));
+        int srow = entrance[0];
+        int scol = entrance[1];
+        myque.push({srow,scol});
+        visited[srow][scol] = true;
+        int step=0;
+        int dRow[]={-1,1,0,0};
+        int dCol[]={0,0,-1,1};
+        while(!myque.empty()){
+            int size=myque.size();
+            for(int i=0;i<size;i++){
+                auto[row,col]=myque.front();
+                myque.pop();
+                if((row==0 || row==n-1 || col==0 || col==m-1)&&!(row==srow && col==scol)){
+              return step;      
+                }
+                for(int dir=0;dir<4;dir++){
+                    int newrow=row + dRow[dir];
+                    int newcol=col+dCol[dir];
+                    if(newrow >= 0 && newrow < n && newcol >= 0 && newcol < m &&
+                       maze[newrow][newcol] == '.' && !visited[newrow][newcol]) {
+                        visited[newrow][newcol] = true;
+                        myque.push({newrow, newcol}); 
+                    }
+                }
+            }
+            step++;
+        }
+        return -1;
+    }
+};
