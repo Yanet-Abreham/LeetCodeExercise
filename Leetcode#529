@@ -1,0 +1,38 @@
+class Solution {
+    public:
+        vector<vector<char>> updateBoard(vector<vector<char>>& board, vector<int>& click) {
+            int m = board.size(), n = board[0].size();
+            int dirs[8][2] = {{-1,-1},{-1,0},{-1,1},{0,-1},{0,1},{1,-1},{1,0},{1,1}};
+            auto inb = [&](int x,int y){ return x>=0 && y>=0 && x<m && y<n; };
+    
+            int cx = click[0], cy = click[1];
+            if (board[cx][cy] == 'M') {           
+                board[cx][cy] = 'X';
+                return board;
+            }
+    
+            queue<pair<int,int>> q;
+            q.push({cx,cy});
+            while (!q.empty()) {
+                auto [x,y] = q.front(); q.pop();
+                if (board[x][y] != 'E') continue; 
+                int mines = 0;
+                for (auto &d : dirs) {
+                    int nx = x + d[0], ny = y + d[1];
+                    if (inb(nx,ny) && board[nx][ny] == 'M') 
+                        ++mines;
+                }
+                if (mines > 0) {
+                    board[x][y] = '0' + mines;     
+                } else {
+                    board[x][y] = 'B';             
+                    for (auto &d : dirs) {
+                        int nx = x + d[0], ny = y + d[1];
+                        if (inb(nx,ny) && board[nx][ny] == 'E')
+                            q.push({nx,ny});
+                    }
+                }
+            }
+            return board;
+        }
+    };
