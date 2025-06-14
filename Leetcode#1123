@@ -1,0 +1,19 @@
+class Solution {
+    public:
+        TreeNode* lcaDeepestLeaves(TreeNode* root) {
+            return dfs(root).second;
+        }
+        private:
+        pair<int,TreeNode*> dfs(TreeNode* node){
+            if(!node) return{0,nullptr};
+            pair<int,TreeNode*> right = dfs(node->right);
+            pair<int,TreeNode*> left = dfs(node->left);
+            if(left.first==right.first){
+                return{left.first+1,node};
+            } else if( left.first> right.first){
+                return{left.first+1,left.second};
+            }else{
+                return{right.first+1,right.second};
+            }
+        }
+    };
