@@ -1,0 +1,43 @@
+class Solution {
+public:
+    int openLock(vector<string>& deadends, string target) {
+        unordered_set<string> st(deadends.begin(), deadends.end());
+        unordered_set<string> visited;
+        queue<string> myque;
+        string start= "0000";
+        if(st.find(start) != st.end())
+            return -1;
+            myque.push(start);
+            visited.insert(start);
+            int result = 0;
+            while( !myque.empty()){
+                int n = myque.size();
+                for(int i = 0; i < n; i++){
+                    string t = myque.front();
+                    myque.pop();
+                    if(t == target)
+                    return result;
+                    vector<string> neighborNodes = getNeighborNodes(t);
+                    for(auto node : neighborNodes){
+                        if(st.find(node) == st.end() && visited.find(node) == visited.end()){
+                            myque.push(node);
+                            visited.insert(node);
+                        }
+                    }
+                }
+                result++;
+            }
+            return -1;
+    }
+        vector <string> getNeighborNodes(string key){
+            vector<string>result;
+            for(int i = 0; i < 4; i++){
+                string temp = key;
+                temp[i] = (key[i] - '0' + 1) % 10 + '0';
+                result.push_back(temp);
+                temp[i] = (key[i] - '0' - 1 + 10) % 10 + '0';
+                result.push_back(temp);
+            }
+        return result; 
+    }
+};
