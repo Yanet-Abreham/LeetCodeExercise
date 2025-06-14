@@ -1,0 +1,40 @@
+class Solution {
+public:
+    int numBusesToDestination(vector<vector<int>>& routes, int source, int target) {
+        if(source==target) return 0;
+        unordered_map<int,vector<int>> Bustop;
+        for(int i=0;i<routes.size();i++){
+            int num=i;
+            vector<int> BusyBus=routes[i];
+            for(auto Busy:BusyBus){
+                Bustop[Busy].push_back(num);
+            }
+        }
+        queue<int> myque;
+        unordered_set<int> VisitedBus;
+        unordered_set<int> VisitedStop;
+        myque.push(source);
+        VisitedStop.insert(source);
+        int level=0;
+        while(!myque.empty()){
+            int luv=myque.size();
+            level++;
+            while(luv--){
+                int stop=myque.front();
+                myque.pop();
+                for(auto bus:Bustop[stop]){
+                    if(VisitedBus.count(bus)) continue;
+                    VisitedBus.insert(bus);
+                    for(auto next:routes[bus]){
+                        if(next==target) return level;
+                        if(!VisitedStop.count(next)){
+                            VisitedStop.insert(next);
+                            myque.push(next);
+                        }
+                    }
+                }
+            }
+        }
+        return -1;
+    }
+};
