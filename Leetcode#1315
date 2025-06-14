@@ -1,0 +1,17 @@
+class Solution {
+    public:
+    int Sum=0;
+        int sumEvenGrandparent(TreeNode* root) {
+            if(root==nullptr) return 0;
+            dfs(root,nullptr,nullptr); 
+            return Sum;
+        }
+        void dfs(TreeNode* root, TreeNode* parent, TreeNode* GrandParent){
+            if(root==nullptr) return;
+            if(GrandParent != nullptr && GrandParent->val%2==0){
+                Sum+=root->val;
+            }
+           dfs(root->left,root,parent);
+           dfs(root->right,root,parent);
+        }
+    };
