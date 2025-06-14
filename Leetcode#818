@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int racecar(int target) {
+        static vector<int> dp(10001,-1);
+        if(dp[target]!=-1) return dp[target];
+        int n= floor(log2(target))+1;
+        if((1<<n)-1==target){
+            return dp[target]=n;
+        }
+        int remain=(1<<n)-1-target;
+        if(dp[remain]==-1) dp[remain]-racecar(remain);
+        int result=n+1+dp[remain];
+        for(int m=0;m<n-1;m++){
+            int tyt=(1<<(n-1))-(1<<m);
+            int remainn=target-tyt;
+            if(dp[remainn]==-1) dp[remainn]=racecar(remainn);
+            result=min(result,(n-1)+1+m+1+dp[remainn]);
+        }
+        return dp[target]=result;
+    }
+};
