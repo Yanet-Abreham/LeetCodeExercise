@@ -1,0 +1,19 @@
+class Solution {
+    public:
+    int TotalSum=0;
+        int sumNumbers(TreeNode* root) {
+            preorder(root,0);
+            return TotalSum;
+        }
+        private:
+        void preorder(TreeNode* node,int sum){
+            if(node==nullptr) return;
+            sum=sum*10+node->val;
+            if(node->left==nullptr && node->right==nullptr){
+                TotalSum+=sum;
+                return;
+            }
+            preorder(node->left,sum);
+            preorder(node->right,sum);
+        }
+    };
