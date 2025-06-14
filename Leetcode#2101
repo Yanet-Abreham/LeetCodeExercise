@@ -1,0 +1,38 @@
+class Solution {
+    public:
+        int maximumDetonation(vector<vector<int>>& bombs) {
+            vector<vector<int>> gr(bombs.size());
+            for(int i=0;i<bombs.size();i++){
+              long long  X1=bombs[i][0];
+              long long Y1=bombs[i][1];
+              long long r1=bombs[i][2];
+              for(int j=0;j<bombs.size();j++){
+                if(i!=j){
+                    long long X= abs(X1-bombs[j][0]);
+                    long long Y= abs(Y1-bombs[j][1]);
+                    if(X*X + Y*Y <= r1*r1){
+                        gr[i].push_back(j);
+                    }
+                }
+              }
+            } 
+            int result = 0;
+            for(int i = 0; i<bombs.size();i++){
+                int Count=0;
+                vector<bool> Visited(bombs.size(),false);
+                dfs(gr,Visited,Count,i);
+                result=max(result,Count);
+            }      
+            return result;
+        }
+        private:
+        void dfs(vector<vector<int>>& gr,vector<bool>& Visited,int& Count,int node){
+            Visited[node]=true;
+            Count++;
+            for(int neighbor : gr[node]){
+                if(!Visited[neighbor]){
+                    dfs(gr,Visited,Count,neighbor);
+                }
+            }
+        }
+    };
